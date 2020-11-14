@@ -1,5 +1,6 @@
+from typing import Union
 import requests
-from .api_typing import PostsBrief
+from .api_typing import PostsBrief, SearchResult
 
 
 class SchdocApi:
@@ -16,15 +17,19 @@ class SchdocApi:
     def _build_uri(self, method: str):
         return f"{self.wp_root}/wp-json/wp/v2/{method}"
 
-    def _get_json(self, url: str, params: dict[str, str]) -> any:
-        r = requests.get(url, params)
+    def _get_json(self, url: str, params: dict[str, str]):
+        
+        r = requests.get(url, params) # type: ignore
 
         if r.status_code != 200:
             raise Exception(r.text)
 
-        return r.json()
+        return r.json() # type: ignore
 
-    def get_category_name(self, cid: int, force_new=False) -> str:
+    def get_category_name_map(self, cid: Union[int, str]) -> str: 
+        return self.get_category_name(int(cid))
+
+    def get_category_name(self, cid: int, force_new: bool = False) -> str:
         '''
         Get the category name of <cid>.
 
@@ -43,7 +48,7 @@ class SchdocApi:
 
         return cname
 
-    def get_posts_brief(self, page=1, category: str = None) -> list[PostsBrief]:
+    def get_posts_brief(self, page: int =1, category: str = '') -> list[PostsBrief]:
         '''
         Get the brief information of the posts in the CMS.
 
@@ -53,16 +58,16 @@ class SchdocApi:
         '''
         posts = self._get_json(
             self._build_uri('posts'),
-            {'page': page, 'categories': category,
+            {'page': str(page), 'categories': category,
              '_fields': 'id,title,categories'}
         )
 
         return posts
 
-    def search(self, search: str, page: int = 1):
+    def search(self, search: str, page: int = 1) -> list[SearchResult]:
         return self._get_json(
             self._build_uri('search'),
-            {'page': page, 'search': search,
+            {'page': str(page), 'search': search,
                 '_fields': 'id,title'}
         )
 
@@ -80,5 +85,5 @@ class SchdocApi:
         '''
         for i in pb:
             i['categories'] = list(
-                map(self.get_category_name, i['categories']))
+                map(self.get_category_name_map, i['categories']))
         return pb

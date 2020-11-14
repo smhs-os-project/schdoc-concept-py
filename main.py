@@ -31,11 +31,10 @@ def ui_main() -> str:
 
 def log_search(api: SchdocApi) -> None:
     s = ui_search()
-    s = s if s != '' else None
     sr = api.search(s)
 
-    for i in map(visualize_search_result, sr):
-        print(i)
+    for i in sr:
+        print(visualize_search_result(i))
 
 
 def log_showall(api: SchdocApi) -> None:
@@ -48,11 +47,11 @@ def log_showall(api: SchdocApi) -> None:
 
 def log_showfull(api: SchdocApi) -> None:
     aid = input("你要查看哪篇文章(數字): ")
-    print(api.get_post_content(aid))
+    print(api.get_post_content(int(aid)))
 
 
 def main():
-    api: SchdocApi = None
+    api: SchdocApi
     try:
         api = SchdocApi(env['SCHDOC_SITE_URL'])
     except (KeyError):
