@@ -4,18 +4,18 @@ Schdoc 的概念樣貌。先用 Python 刻出基本結構和 API，方便之後�
 ## 設定
 ### Requirements
 - Python 3.9+
-- `pipenv` installed
+- `poetry` installed
 
 ### Windows (Command Prompt)
 ```batch
 set SCHDOC_SITE_URL=https://YOUR_WORDPRESS_SITE_URL
-pipenv install
-pipenv run main.py
+poetry install
+poetry run py main.py
 ```
 
 ### Linux (Bash)
 ```bash
-pipenv install
-SCHDOC_SITE_URL="https://YOUR_WORDPRESS_SITE_URL" pipenv run main.py
+poetry install
+SCHDOC_SITE_URL="https://YOUR_WORDPRESS_SITE_URL" poetry run python main.py
 ```
 
