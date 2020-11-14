@@ -18,15 +18,15 @@ class SchdocApi:
         return f"{self.wp_root}/wp-json/wp/v2/{method}"
 
     def _get_json(self, url: str, params: dict[str, str]):
-        
-        r = requests.get(url, params) # type: ignore
+
+        r = requests.get(url, params)  # type: ignore
 
         if r.status_code != 200:
             raise Exception(r.text)
 
-        return r.json() # type: ignore
+        return r.json()  # type: ignore
 
-    def get_category_name_map(self, cid: Union[int, str]) -> str: 
+    def get_category_name_map(self, cid: Union[int, str]) -> str:
         return self.get_category_name(int(cid))
 
     def get_category_name(self, cid: int, force_new: bool = False) -> str:
@@ -48,7 +48,7 @@ class SchdocApi:
 
         return cname
 
-    def get_posts_brief(self, page: int =1, category: str = '') -> list[PostsBrief]:
+    def get_posts_brief(self, page: int = 1, category: str = '') -> list[PostsBrief]:
         '''
         Get the brief information of the posts in the CMS.
 

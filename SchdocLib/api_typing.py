@@ -17,6 +17,7 @@ class PostsBrief(TypedDict):
     title: PostsBrief_Title
     categories: Union[list[str], list[int]]
 
+
 class SearchResult(TypedDict):
     '''
     The return type of search.
